@@ -4,17 +4,25 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "esbuild src/client/index.jsx --minify --sourcemap --entry-names=[dir]/[name] --outbase=src --bundle --outdir=dist --resolve-extensions=.js,.jsx",
+    "watch": "esbuild src/client/index.jsx --minify --sourcemap --entry-names=[dir]/[name] --outbase=src --bundle --outdir=dist --resolve-extensions=.js,.jsx --watch",
     "test": "echo \"Error: no test specified\" && exit 1",
     "serve": "nodemon index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "esbuild": "0.19.2",
     "express": "^4.18.2",
+    "mongodb": "^5.7.0",
     "node-fetch": "^2.6.0",
+    "node-json-db": "^2.2.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "tmi.js": "^1.8.5"
   },
   "devDependencies": {
-    "nodemon": "^2.0.22"
+    "nodemon": "^2.0.22",
+    "react-router-dom": "^6.15.0"
   }
 }
