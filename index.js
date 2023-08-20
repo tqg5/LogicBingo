@@ -50,7 +50,7 @@ app.get('/auth', (req, res) => {
 });
 
 
-app.get('/card', async(req, res) => {
+app.get('api/card', async(req, res) => {
     console.log('getting card');
 
     res.send(await db.getData("/arraytest/card"))

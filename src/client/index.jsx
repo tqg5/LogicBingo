@@ -5,6 +5,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import Entry from './entry';
+import Card from './card';
 
 window.addEventListener("load", (event) => {
     debugger
@@ -12,6 +13,10 @@ window.addEventListener("load", (event) => {
         {
             path: "/",
             element: <Entry />
+        },
+        {
+            path: "/card",
+            element: <Card />
         }
     ]);
     
