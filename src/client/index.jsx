@@ -6,19 +6,24 @@ import {
 } from "react-router-dom";
 import Entry from './entry';
 import Card from './card';
+import Config from './config';
 
 window.addEventListener("load", (event) => {
-    debugger
     const router = createBrowserRouter([
         {
-            path: "/",
+            path: "/bingo",
             element: <Entry />
         },
         {
-            path: "/card",
-            element: <Card />
+          path: "bingo/config",
+          element: <Config />
+      },
+        {
+          path: "/bingo/card",
+                    element: <Card />
         }
-    ]);
+      ]);
+    
     
     ReactDOM.createRoot(document.getElementById("app")).render(
         <React.StrictMode>

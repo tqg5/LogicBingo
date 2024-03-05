@@ -1,16 +1,33 @@
-const http = require('http');
+const https = require('https');
 const express = require('express');
 const fetch = require('node-fetch');
 const path = require('path');
+const fs = require('fs');
 const bot = require('./bot');
 const db = require('./db');
 
 const app = express();
-const port = 3000;
+const port = 8080;
 
-app.use(express.static(path.join(__dirname, 'dist')));
+app.use('/static', express.static(path.join(__dirname, 'dist')));
 
-app.get('/', (req, res) => {
+app.get('/index.html', (req, res) => {
+    res.sendFile(path.join(__dirname+'/dist/index.html'));
+});
+
+app.get('/index.js', (req, res) => {
+    res.sendFile(path.join(__dirname+'/dist/index.js'));
+});
+
+app.get('/config.html', (req, res) => {
+    res.sendFile(path.join(__dirname+'/dist/config.html'));
+});
+
+app.get('/config.js', (req, res) => {
+    res.sendFile(path.join(__dirname+'/dist/config.js'));
+});
+
+app.get('/bingo/*', (req, res) => {
     res.sendFile(path.join(__dirname+'/index.html'));
 });
 
@@ -50,12 +67,15 @@ app.get('/auth', (req, res) => {
 });
 
 
-app.get('api/card', async(req, res) => {
+app.get('/api/card', async(req, res) => {
     console.log('getting card');
 
     res.send(await db.getData("/arraytest/card"))
 })
-  
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
+
+https.createServer({
+    key: fs.readFileSync('server.key'),
+    cert: fs.readFileSync('server.cert')
+}, app).listen(port, () => {
+    console.log('Listening...')
 });
