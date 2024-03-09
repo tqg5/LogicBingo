@@ -132,7 +132,7 @@ const List = () => {
 
     console.log('options table', options)
     options.forEach((value, key) => {
-      console.log('value, key', value, key)
+      //console.log('value, key', value, key)
       cells.push(
           <div
             className='row'
@@ -165,17 +165,17 @@ const List = () => {
   }}
 
   useEffect(() => {
-    twitch.configuration.set('broadcaster', '1', JSON.stringify({options: initDefaultStore()}));
+    //twitch.configuration.set('broadcaster', '1', JSON.stringify({options: initDefaultStore()}));
 
     console.log('broadcaster', twitch.configuration.broadcaster)
     if(!fetchedConfig || !content) return;
-debugger
+
     console.log('options', new Map(content.options))
     setOptions(new Map(content.options));
     // setIsGameStarted(isGameStarted);
     // setSelectedOptions(new Set(selectedOptions));
 
-    console.log('initDefaultStore', initDefaultStore())
+    //console.log('initDefaultStore', initDefaultStore())
   }, [ fetchedConfig, content ]);
 
   useEffect(() => {
@@ -223,6 +223,8 @@ debugger
                   //updateOptions(getOptionsWithoutDuplicates([...options, newOptionValue]));
                   setOptions(map);
                   setNewOptionValue(null);
+
+                  updateConfiguration('options', map);
                 }}
               >
                 Add Option
