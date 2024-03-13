@@ -2,77 +2,11 @@ import React, { useState, useEffect } from 'react';
 import Options from './options';
 import { updateConfiguration } from '../common.jsx';
 import { Table } from './styles.js';
+import { TwitchContentValueObject, TwitchContentValue, TwitchContentOptions, TableOptions, TwitchContent, BingoOptions } from './types';
 
 const twitch = window.Twitch.ext;
 
-let isGameStartedConfig = false;
-let content: BingoOptions | null = null;
-let fetchedConfig = false;
-
-type TwitchContentValueObject = {
-  name: string;
-  isSelected: boolean;
-}
-
-type TwitchContentValue =  [[
-  string,
-  TwitchContentValueObject
-]]
-
-type TwitchContentOptions = {
-  dataType: string;
-  value: TwitchContentValue;
-}
-
-type TableOptions = Map<string, TwitchContentValueObject> | null
-
-interface TwitchContent {
-  options: TwitchContentOptions;
-}
-
-interface BingoOptions {
-  options: Map<string, TwitchContentValueObject>
-}
-
-interface Content {
-
-}
-function reviver(key: string, value:TwitchContentOptions) {
-  if(typeof value === 'object' && value !== null) {
-    if (value.dataType === 'Map') {
-      return new Map<string, { name: string, isSelected:boolean}>(value.value);
-    }
-  }
-  return value;
-}
-
-twitch.configuration.onChanged(function() {
-  console.log('on change')
-  // Checks if configuration is defined
-  if (twitch.configuration.broadcaster) {
-    try {
-      console.log('fetched content', twitch.configuration.broadcaster.content)
-      // Parsing the array saved in broadcaster content
-      content = ((JSON.parse(twitch.configuration.broadcaster.content as string, reviver)) as unknown) as BingoOptions;
-      console.log('parsed content', content)
-
-      isGameStartedConfig = content?.gameState?.isGameStarted ?? false;
-
-      fetchedConfig = true;
-
-      // Checking the content is an object
-      if (typeof content === 'object') {
-        // Updating the value of the options array to be the content from config
-      } else {
-        console.log('Invalid config');
-      }
-    } catch (e) {
-      console.log('Invalid config:', e);
-    }
-  }
-});
-
-const List = () => {
+const List = ({ content }: { content: BingoOptions }) => {
     //const [options, setOptions] = useState(JSON.parse(twitch.configuration.broadcaster?.content ?? []));
 
   const [options, setOptions] = useState<TableOptions | null>(null);
@@ -121,8 +55,24 @@ const List = () => {
     updateConfiguration('options', options);
   }
 
-  const beginGame = () => {
+  const deleteOption = (e: React.MouseEvent<HTMLDivElement>) => {
+    // If event target not an HTMLButtonElement, exit
+    if (!(e.target instanceof HTMLDivElement)) {
+      return;
+    }
 
+    const val = e.target.dataset.value as string;
+
+    options?.delete(val);
+
+    setOptions(new Map(options));
+    updateConfiguration('options', options);
+  }
+
+  const beginGame = () => {
+    const val = e.target.dataset.value as string;
+
+    
   }
 
   const createTable = (options: TableOptions) => {
@@ -141,10 +91,25 @@ const List = () => {
             style={{
               textAlign: 'center',
               border: `1px solid ${value.isSelected ? 'green' : 'red'}`,
-              padding: '20px 10px'
+              padding: '20px 10px',
+              position: 'relative'
             }}
           >
-            {value.name}
+            <div>
+              <div
+                onClick={deleteOption}
+                data-value={value.name}
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  right: 0,
+                  cursor: 'pointer'
+                }}
+              >
+                X
+              </div>
+              {value.name}
+            </div>
           </div>
       )
     });
@@ -168,15 +133,18 @@ const List = () => {
     //twitch.configuration.set('broadcaster', '1', JSON.stringify({options: initDefaultStore()}));
 
     console.log('broadcaster', twitch.configuration.broadcaster)
-    if(!fetchedConfig || !content) return;
+    debugger
+    if(!content) return;
+debugger
 
+console.log('content', content)
     console.log('options', new Map(content.options))
     setOptions(new Map(content.options));
     // setIsGameStarted(isGameStarted);
     // setSelectedOptions(new Set(selectedOptions));
 
     //console.log('initDefaultStore', initDefaultStore())
-  }, [ fetchedConfig, content ]);
+  }, [ content ]);
 
   useEffect(() => {
     console.log('options', options)
@@ -228,6 +196,9 @@ const List = () => {
                 }}
               >
                 Add Option
+              </button>
+              <button>
+                Delete Option
               </button>
             </td>
           </tr>

@@ -6,7 +6,7 @@
   "scripts": {
     "build": "npm run build-panel && npm run build-config",
     "build-panel": "esbuild src/client/entry/index.jsx --sourcemap --entry-names=index --outbase=src --bundle --outdir=dist --resolve-extensions=.js,.jsx,.ts,.tsx",
-    "build-config": "esbuild src/client/streamer/index.jsx --sourcemap --entry-names=config --outbase=src --bundle --outdir=dist --resolve-extensions=.js,.jsx,.ts,.tsx",
+    "build-config": "esbuild src/client/streamer/index.tsx --sourcemap --entry-names=config --outbase=src --bundle --outdir=dist --resolve-extensions=.js,.jsx,.ts,.tsx",
     "watch": "esbuild src/client/* --minify --sourcemap --entry-names=[name] --outbase=src --bundle --outdir=dist --resolve-extensions=.js,.jsx,.ts,.tsx --watch",
     "test": "echo \"Error: no test specified\" && exit 1",
     "serve": "nodemon index.js",
