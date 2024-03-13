@@ -197,9 +197,6 @@ console.log('content', content)
               >
                 Add Option
               </button>
-              <button>
-                Delete Option
-              </button>
             </td>
           </tr>
         </tbody>
