@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import List from './list';
+import Entry from './entry';
 import { BingoOptions } from '../types';
 
 const twitch = window.Twitch.ext;
@@ -30,7 +30,7 @@ twitch.configuration.onChanged(function() {
   
         ReactDOM.createRoot(document.getElementById("app")).render(
             <React.StrictMode>
-                <List content={content} />
+                <Entry content={content} />
             </React.StrictMode>
         );
 

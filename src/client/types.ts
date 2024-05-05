@@ -20,5 +20,6 @@ export interface TwitchContent {
 }
   
 export interface BingoOptions {
-  options: Map<string, TwitchContentValueObject>
+  options: Map<string, TwitchContentValueObject>;
+  isGameStarted: boolean;
 }

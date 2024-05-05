@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Options from './options';
 import { updateConfiguration } from '../common.jsx';
 import { Table } from './styles.js';
-import { TwitchContentValueObject, TwitchContentValue, TwitchContentOptions, TableOptions, TwitchContent, BingoOptions } from './types';
+import { TwitchContentValueObject, TwitchContentValue, TwitchContentOptions, TableOptions, TwitchContent, BingoOptions } from '../types';
 
 const twitch = window.Twitch.ext;
 
@@ -57,6 +57,8 @@ const List = ({ content }: { content: BingoOptions }) => {
 
   const deleteOption = (e: React.MouseEvent<HTMLDivElement>) => {
     // If event target not an HTMLButtonElement, exit
+    e.stopPropagation();
+
     if (!(e.target instanceof HTMLDivElement)) {
       return;
     }
@@ -70,8 +72,8 @@ const List = ({ content }: { content: BingoOptions }) => {
   }
 
   const beginGame = () => {
-    const val = e.target.dataset.value as string;
 
+    updateConfiguration('gameStarted', true);
     
   }
 
@@ -108,7 +110,7 @@ const List = ({ content }: { content: BingoOptions }) => {
               >
                 X
               </div>
-              {value.name}
+              <span onClick={e => {e.preventDefault()}}>{value.name}</span>
             </div>
           </div>
       )
@@ -201,7 +203,7 @@ console.log('content', content)
           </tr>
         </tbody>
       </table>
-      <button>Begin Game</button>
+      <button onClick={beginGame}>Begin Game</button>
     </>
   )
 }
